@@ -1,0 +1,23 @@
+app:
+  env: ${APP_ENV:development}
+  name: microservices-template
+
+http:
+  port: ${APP_PORT:8080}
+
+grpc:
+  port: ${GRPC_PORT:50051}
+
+database:
+  host: ${DB_HOST:localhost}
+  port: ${DB_PORT:5432}
+  name: ${DB_NAME:microservices_db}
+  user: ${DB_USER:postgres}
+  password: ${DB_PASSWORD:postgres}
+  sslmode: ${DB_SSL_MODE:disable}
+
+rabbitmq:
+  host: ${RABBITMQ_HOST:localhost}
+  port: ${RABBITMQ_PORT:5672}
+  user: ${RABBITMQ_USER:guest}
+  password: ${RABBITMQ_PASSWORD:guest}
