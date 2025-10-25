@@ -18,3 +18,19 @@ install-tools: ## Install development tools
 tidy: ## Tidy go modules
 	go mod tidy
 	go mod verify
+
+.PHONY: migrate-up
+migrate-up: ## Run database migrations up
+	migrate -path db/migrations -database "$(DATABASE_URL)" up
+
+.PHONY: migrate-down
+migrate-down: ## Run database migrations down
+	migrate -path db/migrations -database "$(DATABASE_URL)" down
+
+.PHONY: migrate-create
+migrate-create: ## Create new migration (usage: make migrate-create NAME=create_table)
+	migrate create -ext sql -dir db/migrations -seq $(NAME)
+
+.PHONY: sqlc-generate
+sqlc-generate: ## Generate sqlc code
+	sqlc generate
