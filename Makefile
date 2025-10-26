@@ -65,3 +65,21 @@ docker-logs: ## Show logs from all services
 docker-clean: ## Clean all docker resources
 	docker-compose -f deployments/docker/docker-compose.yml down -v
 	docker system prune -af
+
+.PHONY: k8s-apply
+k8s-apply: ## Apply all Kubernetes manifests
+	kubectl apply -f deployments/k8s/namespace.yaml
+	kubectl apply -f deployments/k8s/configmap.yaml
+	kubectl apply -f deployments/k8s/secret.yaml
+	kubectl apply -f deployments/k8s/postgres-deployment.yaml
+	kubectl apply -f deployments/k8s/rabbitmq-deployment.yaml
+	kubectl apply -f deployments/k8s/api-deployment.yaml
+	kubectl apply -f deployments/k8s/hpa.yaml
+
+.PHONY: k8s-delete
+k8s-delete: ## Delete all Kubernetes resources
+	kubectl delete -f deployments/k8s/ --recursive
+
+.PHONY: k8s-status
+k8s-status: ## Check status of all pods
+	kubectl get all -n microservices
