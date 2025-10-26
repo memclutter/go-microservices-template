@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"fmt"
 
+	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/memclutter/go-microservices-template/internal/domain/user"
 	"github.com/memclutter/go-microservices-template/internal/infrastructure/repository/sqlc"
@@ -31,8 +32,8 @@ func (r *UserRepository) Create(ctx context.Context, u *user.User) error {
 		Email:     u.Email,
 		Name:      u.Name,
 		Password:  u.Password,
-		CreatedAt: u.CreatedAt,
-		UpdatedAt: u.UpdatedAt,
+		CreatedAt: pgtype.Timestamp{Time: u.CreatedAt, Valid: true},
+		UpdatedAt: pgtype.Timestamp{Time: u.UpdatedAt, Valid: true},
 	}
 
 	_, err := r.queries.CreateUser(ctx, params)
@@ -58,8 +59,8 @@ func (r *UserRepository) GetByID(ctx context.Context, id string) (*user.User, er
 		Email:     row.Email,
 		Name:      row.Name,
 		Password:  row.Password,
-		CreatedAt: row.CreatedAt,
-		UpdatedAt: row.UpdatedAt,
+		CreatedAt: row.CreatedAt.Time,
+		UpdatedAt: row.UpdatedAt.Time,
 	}, nil
 }
 
@@ -78,8 +79,8 @@ func (r *UserRepository) GetByEmail(ctx context.Context, email string) (*user.Us
 		Email:     row.Email,
 		Name:      row.Name,
 		Password:  row.Password,
-		CreatedAt: row.CreatedAt,
-		UpdatedAt: row.UpdatedAt,
+		CreatedAt: row.CreatedAt.Time,
+		UpdatedAt: row.UpdatedAt.Time,
 	}, nil
 }
 
@@ -88,7 +89,7 @@ func (r *UserRepository) Update(ctx context.Context, u *user.User) error {
 	params := sqlc.UpdateUserParams{
 		ID:        u.ID,
 		Name:      u.Name,
-		UpdatedAt: u.UpdatedAt,
+		UpdatedAt: pgtype.Timestamp{Time: u.UpdatedAt, Valid: true},
 	}
 
 	_, err := r.queries.UpdateUser(ctx, params)
@@ -128,8 +129,8 @@ func (r *UserRepository) List(ctx context.Context, limit, offset int) ([]*user.U
 			Email:     row.Email,
 			Name:      row.Name,
 			Password:  row.Password,
-			CreatedAt: row.CreatedAt,
-			UpdatedAt: row.UpdatedAt,
+			CreatedAt: row.CreatedAt.Time,
+			UpdatedAt: row.UpdatedAt.Time,
 		}
 	}
 

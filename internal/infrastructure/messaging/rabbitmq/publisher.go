@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"time"
 
 	"github.com/memclutter/go-microservices-template/pkg/logger"
 	amqp "github.com/rabbitmq/amqp091-go"
@@ -83,7 +84,7 @@ func (p *Publisher) Publish(ctx context.Context, eventType string, payload inter
 			ContentType:  "application/json",
 			Body:         body,
 			DeliveryMode: amqp.Persistent, // Persistent delivery
-			Timestamp:    amqp.Now(),
+			Timestamp:    time.Now(),
 		},
 	)
 	if err != nil {
