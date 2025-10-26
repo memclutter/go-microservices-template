@@ -113,7 +113,7 @@ func (r *UserRepository) Delete(ctx context.Context, id string) error {
 }
 
 // List retrieves users with pagination
-func (r *UserRepository) List(ctx context.Context, limit, offset int) ([]*user.User, error) {
+func (r *UserRepository) List(ctx context.Context, limit, offset int32) ([]*user.User, error) {
 	rows, err := r.queries.ListUsers(ctx, sqlc.ListUsersParams{
 		Limit:  int32(limit),
 		Offset: int32(offset),

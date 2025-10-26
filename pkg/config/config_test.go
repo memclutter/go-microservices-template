@@ -19,10 +19,10 @@ func TestLoad(t *testing.T) {
 		{
 			name: "load from defaults",
 			setup: func() {
-				os.Setenv("APP_ENV", "test")
+				_ = os.Setenv("APP_ENV", "test")
 			},
 			cleanup: func() {
-				os.Unsetenv("APP_ENV")
+				_ = os.Unsetenv("APP_ENV")
 			},
 			wantErr: false,
 			check: func(t *testing.T, cfg *Config) {

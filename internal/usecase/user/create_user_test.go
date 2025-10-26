@@ -46,7 +46,7 @@ func (m *MockRepository) Delete(ctx context.Context, id string) error {
 	return args.Error(0)
 }
 
-func (m *MockRepository) List(ctx context.Context, limit, offset int) ([]*user.User, error) {
+func (m *MockRepository) List(ctx context.Context, limit, offset int32) ([]*user.User, error) {
 	args := m.Called(ctx, limit, offset)
 	if args.Get(0) == nil {
 		return nil, args.Error(1)

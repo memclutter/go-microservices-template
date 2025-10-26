@@ -31,7 +31,7 @@ func NewConsumer(url, queueName string, routingKeys []string, log *logger.Logger
 	// Create channel
 	ch, err := conn.Channel()
 	if err != nil {
-		conn.Close()
+		_ = conn.Close()
 		return nil, fmt.Errorf("failed to open channel: %w", err)
 	}
 
@@ -46,8 +46,8 @@ func NewConsumer(url, queueName string, routingKeys []string, log *logger.Logger
 		nil,
 	)
 	if err != nil {
-		ch.Close()
-		conn.Close()
+		_ = ch.Close()
+		_ = conn.Close()
 		return nil, fmt.Errorf("failed to declare exchange: %w", err)
 	}
 
@@ -61,8 +61,8 @@ func NewConsumer(url, queueName string, routingKeys []string, log *logger.Logger
 		nil,       // arguments
 	)
 	if err != nil {
-		ch.Close()
-		conn.Close()
+		_ = ch.Close()
+		_ = conn.Close()
 		return nil, fmt.Errorf("failed to declare queue: %w", err)
 	}
 
@@ -76,8 +76,8 @@ func NewConsumer(url, queueName string, routingKeys []string, log *logger.Logger
 			nil,
 		)
 		if err != nil {
-			ch.Close()
-			conn.Close()
+			_ = ch.Close()
+			_ = conn.Close()
 			return nil, fmt.Errorf("failed to bind queue: %w", err)
 		}
 	}
@@ -158,7 +158,7 @@ func (c *Consumer) handleMessage(ctx context.Context, msg amqp.Delivery) {
 	handler, ok := c.handlers[eventType]
 	if !ok {
 		c.logger.WithField("event_type", eventType).Warn("No handler registered for event type")
-		msg.Nack(false, false) // Reject message
+		_ = msg.Nack(false, false) // Reject message
 		return
 	}
 
@@ -166,7 +166,7 @@ func (c *Consumer) handleMessage(ctx context.Context, msg amqp.Delivery) {
 	err := handler(ctx, eventType, msg.Body)
 	if err != nil {
 		c.logger.WithError(err).WithField("event_type", eventType).Error("Failed to handle event")
-		msg.Nack(false, true) // Requeue message
+		_ = msg.Nack(false, true) // Requeue message
 		return
 	}
 
