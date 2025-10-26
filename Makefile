@@ -13,6 +13,7 @@ install-tools: ## Install development tools
 	go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2@latest
 	go install github.com/sqlc-dev/sqlc/cmd/sqlc@latest
 	go install github.com/google/wire/cmd/wire@latest
+	go install github.com/bufbuild/buf/cmd/buf@v1.59.0
 
 .PHONY: tidy
 tidy: ## Tidy go modules
@@ -34,3 +35,12 @@ migrate-create: ## Create new migration (usage: make migrate-create NAME=create_
 .PHONY: sqlc-generate
 sqlc-generate: ## Generate sqlc code
 	sqlc generate
+
+.PHONY: proto-gen
+proto-gen: ## Generate protobuf code
+	@chmod +x scripts/generate-proto.sh
+	@./scripts/generate-proto.sh
+
+.PHONY: proto-lint
+proto-lint: ## Lint protobuf files
+	buf lint

@@ -1,0 +1,109 @@
+syntax = "proto3";
+
+package user;
+
+import "google/api/annotations.proto";
+import "common/common.proto";
+
+option go_package = "github.com/memclutter/go-microservices-template/api/proto/user";
+
+// User service handles user-related operations
+service UserService {
+  // CreateUser creates a new user
+  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse) {
+    option (google.api.http) = {
+      post: "/v1/users"
+      body: "*"
+    };
+  }
+
+  // GetUser retrieves a user by ID
+  rpc GetUser(GetUserRequest) returns (GetUserResponse) {
+    option (google.api.http) = {
+      get: "/v1/users/{user_id}"
+    };
+  }
+
+  // UpdateUser updates an existing user
+  rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse) {
+    option (google.api.http) = {
+      put: "/v1/users/{user_id}"
+      body: "*"
+    };
+  }
+
+  // DeleteUser deletes a user
+  rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse) {
+    option (google.api.http) = {
+      delete: "/v1/users/{user_id}"
+    };
+  }
+
+  // ListUsers retrieves a list of users
+  rpc ListUsers(ListUsersRequest) returns (ListUsersResponse) {
+    option (google.api.http) = {
+      get: "/v1/users"
+    };
+  }
+}
+
+// User represents a user entity
+message User {
+  string id = 1;
+  string email = 2;
+  string name = 3;
+  common.Timestamp created_at = 4;
+  common.Timestamp updated_at = 5;
+}
+
+// CreateUserRequest contains data to create a user
+message CreateUserRequest {
+  string email = 1;
+  string name = 2;
+  string password = 3;
+}
+
+// CreateUserResponse contains created user data
+message CreateUserResponse {
+  User user = 1;
+}
+
+// GetUserRequest contains user ID
+message GetUserRequest {
+  string user_id = 1;
+}
+
+// GetUserResponse contains user data
+message GetUserResponse {
+  User user = 1;
+}
+
+// UpdateUserRequest contains data to update a user
+message UpdateUserRequest {
+  string user_id = 1;
+  string name = 2;
+}
+
+// UpdateUserResponse contains updated user data
+message UpdateUserResponse {
+  User user = 1;
+}
+
+// DeleteUserRequest contains user ID to delete
+message DeleteUserRequest {
+  string user_id = 1;
+}
+
+// DeleteUserResponse is empty
+message DeleteUserResponse {}
+
+// ListUsersRequest contains pagination parameters
+message ListUsersRequest {
+  common.PaginationRequest pagination = 1;
+}
+
+// ListUsersResponse contains list of users
+message ListUsersResponse {
+  repeated User users = 1;
+  int32 total = 2;
+}
