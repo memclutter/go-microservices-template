@@ -44,3 +44,24 @@ proto-gen: ## Generate protobuf code
 .PHONY: proto-lint
 proto-lint: ## Lint protobuf files
 	buf lint
+
+.PHONY: docker-build
+docker-build: ## Build Docker image
+	docker build -t go-microservices-template:latest -f deployments/docker/Dockerfile .
+
+.PHONY: docker-up
+docker-up: ## Start all services with docker-compose
+	docker-compose -f deployments/docker/docker-compose.yml up -d
+
+.PHONY: docker-down
+docker-down: ## Stop all services
+	docker-compose -f deployments/docker/docker-compose.yml down
+
+.PHONY: docker-logs
+docker-logs: ## Show logs from all services
+	docker-compose -f deployments/docker/docker-compose.yml logs -f
+
+.PHONY: docker-clean
+docker-clean: ## Clean all docker resources
+	docker-compose -f deployments/docker/docker-compose.yml down -v
+	docker system prune -af
