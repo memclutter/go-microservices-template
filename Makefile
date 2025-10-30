@@ -38,8 +38,7 @@ sqlc-generate: ## Generate sqlc code
 
 .PHONY: proto-gen
 proto-gen: ## Generate protobuf code
-	@chmod +x scripts/generate-proto.sh
-	@./scripts/generate-proto.sh
+	buf generate
 
 .PHONY: proto-lint
 proto-lint: ## Lint protobuf files
