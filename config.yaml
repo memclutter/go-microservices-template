@@ -3,21 +3,21 @@ app:
   name: microservices-template
 
 http:
-  port: ${APP_PORT:8080}
+  port: 8080
 
 grpc:
-  port: ${GRPC_PORT:50051}
+  port: 50051
 
 database:
-  host: ${DB_HOST:localhost}
-  port: ${DB_PORT:5432}
-  name: ${DB_NAME:microservices_db}
-  user: ${DB_USER:postgres}
-  password: ${DB_PASSWORD:postgres}
-  sslmode: ${DB_SSL_MODE:disable}
+  host: localhost
+  port: 5432
+  name: microservices_db
+  user: postgres
+  password: postgres
+  sslmode: disable
 
 rabbitmq:
-  host: ${RABBITMQ_HOST:localhost}
-  port: ${RABBITMQ_PORT:5672}
-  user: ${RABBITMQ_USER:guest}
-  password: ${RABBITMQ_PASSWORD:guest}
+  host: localhost
+  port: 5672
+  user: guest
+  password: guest

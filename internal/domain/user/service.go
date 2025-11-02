@@ -27,7 +27,7 @@ func NewService(repo Repository) Service {
 func (s *service) IsEmailUnique(ctx context.Context, email string) (bool, error) {
 	_, err := s.repo.GetByEmail(ctx, email)
 	if err != nil {
-		if err == ErrUserNotFound {
+		if errors.Is(err, ErrUserNotFound) {
 			return true, nil
 		}
 		return false, err

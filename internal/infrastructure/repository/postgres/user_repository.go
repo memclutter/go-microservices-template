@@ -3,8 +3,10 @@ package postgres
 import (
 	"context"
 	"database/sql"
+	"errors"
 	"fmt"
 
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/memclutter/go-microservices-template/internal/domain/user"
@@ -68,7 +70,7 @@ func (r *UserRepository) GetByID(ctx context.Context, id string) (*user.User, er
 func (r *UserRepository) GetByEmail(ctx context.Context, email string) (*user.User, error) {
 	row, err := r.queries.GetUserByEmail(ctx, email)
 	if err != nil {
-		if err == sql.ErrNoRows {
+		if errors.Is(err, pgx.ErrNoRows) {
 			return nil, user.ErrUserNotFound
 		}
 		return nil, fmt.Errorf("failed to get user: %w", err)

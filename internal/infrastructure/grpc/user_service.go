@@ -4,14 +4,13 @@ import (
 	"context"
 	"time"
 
+	"github.com/memclutter/go-microservices-template/api/gen/common"
 	"github.com/memclutter/go-microservices-template/api/gen/user"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
-	"google.golang.org/protobuf/types/known/timestamppb"
-
 	userUseCase "github.com/memclutter/go-microservices-template/internal/usecase/user"
 	"github.com/memclutter/go-microservices-template/pkg/logger"
 	"github.com/memclutter/go-microservices-template/pkg/metrics"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 // UserServiceServer implements the gRPC UserService
@@ -87,10 +86,10 @@ func (s *UserServiceServer) CreateUser(ctx context.Context, req *user.CreateUser
 			Id:    output.UserID,
 			Email: output.Email,
 			Name:  output.Name,
-			CreatedAt: &timestamppb.Timestamp{
+			CreatedAt: &common.Timestamp{
 				Seconds: time.Now().Unix(),
 			},
-			UpdatedAt: &timestamppb.Timestamp{
+			UpdatedAt: &common.Timestamp{
 				Seconds: time.Now().Unix(),
 			},
 		},
@@ -133,10 +132,10 @@ func (s *UserServiceServer) GetUser(ctx context.Context, req *user.GetUserReques
 			Id:    output.ID,
 			Email: output.Email,
 			Name:  output.Name,
-			CreatedAt: &timestamppb.Timestamp{
+			CreatedAt: &common.Timestamp{
 				Seconds: time.Now().Unix(),
 			},
-			UpdatedAt: &timestamppb.Timestamp{
+			UpdatedAt: &common.Timestamp{
 				Seconds: time.Now().Unix(),
 			},
 		},
